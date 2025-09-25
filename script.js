@@ -12,20 +12,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const changeableMessage = document.getElementById('changeable-message');
     const sparkleContainer = document.getElementById('sparkle-container');
     const haloEffect = document.getElementById('halo-effect');
+    const presidentImageContainer = document.getElementById('president-image-container'); // 画像コンテナを取得
 
     let messageIndex = 0;
 
+    // 後光エフェクトの位置を更新する関数
+    function updateHaloPosition() {
+        if (presidentImageContainer) {
+            const imgRect = presidentImageContainer.getBoundingClientRect();
+            haloEffect.style.left = `${imgRect.left + imgRect.width / 2 - haloEffect.offsetWidth / 2}px`;
+            haloEffect.style.top = `${imgRect.top + imgRect.height / 2 - haloEffect.offsetHeight / 2}px`;
+        }
+    }
+
     // ボタンをクリックした時のイベント
     praiseButton.addEventListener('click', () => {
-        // メッセージを切り替える
-        changeableMessage.innerHTML = praiseMessages[messageIndex]; // HTMLとして設定
+        changeableMessage.innerHTML = praiseMessages[messageIndex];
         changeableMessage.style.animation = 'none';
         void changeableMessage.offsetWidth;
         changeableMessage.style.animation = 'fade-in-up 1.5s ease-out forwards';
 
         messageIndex = (messageIndex + 1) % praiseMessages.length;
 
-        // 大量の賛美スパークルを生成
         for (let i = 0; i < 70; i++) {
             createSparkle();
         }
@@ -34,12 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // 常にスパークルを生成
     setInterval(() => {
         createSparkle();
-    }, 150); // 間隔を短くして頻繁に発生させる
+    }, 150);
 
-    // 後光エフェクトの位置調整（中央に配置）
-    haloEffect.style.left = `calc(50% - ${haloEffect.offsetWidth / 2}px)`;
-    haloEffect.style.top = `calc(50% - ${haloEffect.offsetHeight / 2}px)`;
-
+    // 画面読み込み時とリサイズ時に後光エフェクトの位置を調整
+    window.addEventListener('load', updateHaloPosition);
+    window.addEventListener('resize', updateHaloPosition);
 
     // 画面読み込み時に最初のエフェクトを大量に生成
     for (let i = 0; i < 150; i++) {
@@ -49,11 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function createSparkle() {
         const sparkle = document.createElement('div');
         sparkle.classList.add('particle-sparkle');
-        sparkle.textContent = '✨'; // キラキラマーク
+        sparkle.textContent = '✨';
         
         sparkle.style.left = `${Math.random() * 100}vw`;
-        sparkle.style.animationDuration = `${Math.random() * 3 + 4}s`; // 4-7秒
-        sparkle.style.fontSize = `${Math.random() * 1.5 + 1}em`; // 少し大きめに
+        sparkle.style.animationDuration = `${Math.random() * 3 + 4}s`;
+        sparkle.style.fontSize = `${Math.random() * 1.5 + 1}em`;
         
         sparkleContainer.appendChild(sparkle);
 
