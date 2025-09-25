@@ -22,24 +22,24 @@ body, html {
     flex-direction: column;
     z-index: 10;
     box-sizing: border-box;
-    padding: 10px; /* 画面端に少し余白 */
+    padding: 10px;
 }
 
 /* 後光のエフェクト */
 #halo-effect {
     position: absolute;
-    width: 350px; /* サイズを調整 */
-    height: 350px;
-    background: radial-gradient(circle, rgba(255, 215, 0, 0.7) 0%, rgba(255, 215, 0, 0) 70%);
+    width: 400px; /* サイズをさらに大きく */
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.9) 0%, rgba(255, 215, 0, 0) 70%); /* 金色の後光を強く */
     border-radius: 50%;
-    animation: pulse-halo 4s infinite alternate, rotate-halo 20s linear infinite;
+    animation: pulse-halo 3s infinite alternate, rotate-halo 25s linear infinite; /* アニメーション速度調整 */
     z-index: 0;
-    filter: blur(5px); /* より柔らかい光 */
+    filter: blur(8px); /* より柔らかく、大きくぼかす */
 }
 
 @keyframes pulse-halo {
-    from { transform: scale(0.8); opacity: 0.6; }
-    to { transform: scale(1.2); opacity: 1; }
+    from { transform: scale(0.7); opacity: 0.7; }
+    to { transform: scale(1.3); opacity: 1; }
 }
 
 @keyframes rotate-halo {
@@ -47,28 +47,55 @@ body, html {
     to { transform: rotate(360deg); }
 }
 
+/* 前景のキラキラ */
 #sparkle-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: 3; /* メッセージより手前 */
     pointer-events: none;
 }
+
+/* 背景のキラキラ */
+#bg-sparkle-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* 後光のさらに奥 */
+    pointer-events: none;
+    overflow: hidden;
+}
+.bg-particle-sparkle {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.1); /* 背景なので薄く */
+    font-size: 1.5em; /* 少し大きめ */
+    animation: float-sparkle-bg var(--duration) linear infinite;
+    will-change: transform, opacity;
+}
+
+@keyframes float-sparkle-bg {
+    0% { transform: translateY(0) rotate(0deg) scale(0.5); opacity: 0; }
+    20% { opacity: 0.3; }
+    100% { transform: translateY(-150vh) rotate(720deg) scale(1.5); opacity: 0; }
+}
+
 
 #message-area {
     position: relative;
     z-index: 2;
     text-align: center;
-    background: rgba(0, 0, 0, 0.5); /* 背景を少し濃くして画像を目立たせる */
-    padding: 30px 40px; /* パディングを調整 */
+    background: rgba(0, 0, 0, 0.6); /* 背景をさらに濃くして画像と文字を目立たせる */
+    padding: 30px 40px;
     border-radius: 15px;
-    box-shadow: 0 0 50px rgba(255, 215, 0, 0.8); /* さらに派手な金色のシャドウ */
+    box-shadow: 0 0 60px rgba(255, 215, 0, 0.9); /* さらに派手な金色のシャドウ */
     box-sizing: border-box;
-    max-width: 95%; /* 画面幅の95%に制限 */
-    border: 3px solid gold; /* 太い金色の枠 */
-    display: flex; /* Flexboxを使って画像を中央配置 */
+    max-width: 95%;
+    border: 4px solid gold; /* 太い金色の枠 */
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -76,21 +103,22 @@ body, html {
 
 #president-image-container {
     position: relative;
-    width: 200px; /* 画像のベースサイズ */
-    height: 200px;
-    margin-bottom: 20px;
-    border-radius: 50%; /* 丸く切り抜く */
+    width: 220px; /* 画像のベースサイズを大きく */
+    height: 220px;
+    margin-bottom: 25px; /* マージンを調整 */
+    border-radius: 50%;
     overflow: hidden;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.9); /* 画像にも光るシャドウ */
-    animation: image-pulse 3s infinite alternate; /* 画像が脈動 */
-    border: 5px solid gold; /* 画像の周りの枠 */
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.9); /* 画像にも強い光るシャドウ */
+    animation: image-pulse 2.5s infinite alternate;
+    border: 6px solid gold; /* 画像の周りの枠を太く */
 }
 
 #president-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* 画像がコンテナに収まるように */
+    object-fit: cover;
     display: block;
+    filter: brightness(1.1); /* 画像を少し明るく */
 }
 
 .image-glow {
@@ -100,41 +128,41 @@ body, html {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    box-shadow: 0 0 30px 10px rgba(255, 215, 0, 0.7); /* 画像の周りの強い輝き */
-    animation: image-halo-pulse 2.5s infinite alternate;
+    box-shadow: 0 0 40px 15px rgba(255, 215, 0, 0.8); /* 画像の周りの強い輝き */
+    animation: image-halo-pulse 2s infinite alternate;
     pointer-events: none;
 }
 
 @keyframes image-pulse {
     0% { transform: scale(1); }
-    100% { transform: scale(1.05); }
+    100% { transform: scale(1.08); } /* 脈動を少し強く */
 }
 
 @keyframes image-halo-pulse {
-    0% { box-shadow: 0 0 30px 10px rgba(255, 215, 0, 0.7); }
-    100% { box-shadow: 0 0 45px 15px rgba(255, 215, 0, 1); }
+    0% { box-shadow: 0 0 40px 15px rgba(255, 215, 0, 0.8); }
+    100% { box-shadow: 0 0 60px 20px rgba(255, 215, 0, 1); }
 }
 
 
 .main-message {
     font-family: 'Orbitron', sans-serif;
-    font-size: 4em; /* 画像が加わったので少し調整 */
+    font-size: 4.5em; /* 少し大きく */
     font-weight: 700;
-    letter-spacing: 5px;
+    letter-spacing: 6px; /* さらに広げる */
     margin-bottom: 20px;
     color: gold;
-    text-shadow: 0 0 15px gold, 0 0 30px rgba(255, 215, 0, 0.8);
-    animation: fade-in 2s ease-out, glow-text 1.5s infinite alternate;
+    text-shadow: 0 0 20px gold, 0 0 40px rgba(255, 215, 0, 0.9); /* 強く光る */
+    animation: fade-in 2s ease-out, glow-text 1.2s infinite alternate; /* 光る速度を速める */
     line-height: 1.2;
 }
 
 @keyframes glow-text {
-    from { text-shadow: 0 0 10px gold, 0 0 20px rgba(255, 215, 0, 0.6); }
-    to { text-shadow: 0 0 20px gold, 0 0 40px rgba(255, 215, 0, 0.9); }
+    from { text-shadow: 0 0 15px gold, 0 0 30px rgba(255, 215, 0, 0.7); }
+    to { text-shadow: 0 0 30px gold, 0 0 60px rgba(255, 215, 0, 1); }
 }
 
 .sub-message {
-    font-size: 1.6em; /* 調整 */
+    font-size: 1.8em;
     line-height: 1.5;
     margin-top: 15px;
     opacity: 0;
@@ -143,38 +171,38 @@ body, html {
 }
 
 #praise-button {
-    margin-top: 30px; /* マージン調整 */
-    padding: 18px 35px; /* ボタンサイズ調整 */
-    font-size: 1.5em; /* ボタンの文字サイズ調整 */
+    margin-top: 35px; /* マージン調整 */
+    padding: 20px 40px; /* ボタンサイズ調整 */
+    font-size: 1.6em;
     font-weight: bold;
     background: linear-gradient(45deg, #ffd700, #ffec8b);
     border: none;
-    border-radius: 10px;
-    box-shadow: 0 5px 25px rgba(255, 215, 0, 0.7);
+    border-radius: 12px; /* 角を少し丸く */
+    box-shadow: 0 5px 30px rgba(255, 215, 0, 0.8); /* さらに派手なシャドウ */
     color: #4b0082;
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
-    animation: bounce 2s infinite, pulse-button 1.5s infinite alternate;
+    animation: bounce 2s infinite, pulse-button 1.2s infinite alternate; /* ボタンも光る速度を速める */
 }
 
 #praise-button:hover {
     transform: scale(1.15);
-    box-shadow: 0 8px 30px rgba(255, 215, 0, 0.9);
+    box-shadow: 0 8px 35px rgba(255, 215, 0, 1);
 }
 
 @keyframes pulse-button {
-    from { box-shadow: 5px 5px 20px rgba(255, 215, 0, 0.5); }
-    to { box-shadow: 8px 8px 25px rgba(255, 215, 0, 0.8); }
+    from { box-shadow: 5px 5px 25px rgba(255, 215, 0, 0.7); }
+    to { box-shadow: 10px 10px 30px rgba(255, 215, 0, 1); }
 }
 
 .creator-note {
-    font-size: 0.9em;
+    font-size: 1em; /* 少し大きく */
     color: #a3b9d0;
-    margin-top: 20px; /* マージン調整 */
-    letter-spacing: 1px;
+    margin-top: 25px; /* マージン調整 */
+    letter-spacing: 1.5px;
 }
 
-/* スパークルエフェクト */
+/* 前景のスパークルエフェクト */
 .particle-sparkle {
     position: absolute;
     animation: float-sparkle var(--duration) ease-in forwards;
@@ -182,13 +210,13 @@ body, html {
     pointer-events: none;
     will-change: transform, opacity;
     color: #ffd700;
-    font-size: 2em;
+    font-size: 2.2em; /* 少し大きく */
 }
 
 @keyframes float-sparkle {
-    0% { transform: translateY(0) scale(0); opacity: 0; }
-    10% { opacity: 1; transform: scale(1); }
-    100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
+    0% { transform: translateY(0) scale(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; transform: scale(1) rotate(20deg); }
+    100% { transform: translateY(-120vh) scale(1.8) rotate(360deg); opacity: 0; }
 }
 
 @keyframes fade-in {
@@ -208,21 +236,21 @@ body, html {
 }
 
 /* スマホ対応 */
-@media (max-width: 768px) { /* タブレットやスマホ向けのブレークポイント */
+@media (max-width: 768px) {
     #app-container {
-        padding: 10px;
+        padding: 5px;
     }
     #message-area {
-        padding: 20px;
-        max-width: 95%; /* さらに広めに */
+        padding: 15px 20px;
+        max-width: 98%; /* さらに広めに */
     }
     #president-image-container {
-        width: 150px; /* 画像サイズ調整 */
+        width: 150px;
         height: 150px;
         margin-bottom: 15px;
     }
     .main-message {
-        font-size: 2.2em; /* スマホでは文字サイズを小さく */
+        font-size: 2em;
         letter-spacing: 1px;
     }
     .sub-message {
@@ -235,18 +263,18 @@ body, html {
         margin-top: 20px;
     }
     .creator-note {
-        font-size: 0.7em;
+        font-size: 0.8em;
         margin-top: 15px;
     }
     #halo-effect {
-        width: 250px;
-        height: 250px;
+        width: 300px;
+        height: 300px;
     }
 }
 
-@media (max-width: 480px) { /* さらに小さいスマホ向け */
+@media (max-width: 480px) {
     .main-message {
-        font-size: 1.8em;
+        font-size: 1.5em;
     }
     .sub-message {
         font-size: 0.8em;
@@ -256,7 +284,11 @@ body, html {
         font-size: 0.9em;
     }
     #president-image-container {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
+    }
+    #halo-effect {
+        width: 200px;
+        height: 200px;
     }
 }
